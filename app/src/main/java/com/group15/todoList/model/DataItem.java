@@ -1,40 +1,25 @@
 package com.group15.todoList.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 
-/**
- * A single data item
- * 
- * @author Joern Kreutel
- * 
- */
 public class DataItem implements Serializable {
 
-	/**
-	 * some static id assignment
-	 */
 	private static int ID = 0;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7481912314472891511L;
 
-	/**
-	 * the types enumeration
-	 */
 	public enum ItemTypes {
 		TYPE1, TYPE2, TYPE3
 	}
 
-	/**
-	 * the fields
-	 */
 	private long id;
 	private ItemTypes type;
 	private String name;
 	private String description;
-	private String iconId;
+	private boolean favourite;
+	private DateFormat date;
+
 
 	public void setType(ItemTypes type) {
 		this.type = type;
@@ -48,17 +33,17 @@ public class DataItem implements Serializable {
 		this.description = description;
 	}
 
-	public void setIconId(String iconId) {
-		this.iconId = iconId;
-	}
+	public void setFavourite(boolean favourite) { this.favourite = favourite; }
 
-	public DataItem(long id, ItemTypes type, String name, String description,
-			String iconId) {
+	public void setDate(DateFormat date) { this.date = date; }
+
+	public DataItem(long id, ItemTypes type, String name, String description, boolean favourite, DateFormat date) {
 		this.setId(id == -1 ? ID++ : id);
 		this.setType(type);
 		this.setName(name);
 		this.setDescription(description);
-		this.setIconId(iconId);
+		this.setFavourite(favourite);
+		this.setDate(date);
 	}
 
 	public DataItem() {
@@ -77,30 +62,22 @@ public class DataItem implements Serializable {
 		return this.description;
 	}
 
-	/**
-	 * @return
-	 */
-	public String getIconId() {
-		return this.iconId;
-	}
+	public boolean isFavourite() { return this.favourite; }
 
-	/**
-	 * update an item given the content of anothr one
-	 * 
-	 * @param item
-	 */
+	public DateFormat getDate() { return this.date; }
+
 	public DataItem updateFrom(DataItem item) {
 		this.setName(item.getName());
 		this.setDescription(item.getDescription());
 		this.setType(item.getType());
-		this.setIconId(item.getIconId());
-
+		this.setFavourite(item.isFavourite());
+		this.setDate(item.getDate());
 		return this;
 	}
 
 	public String toString() {
 		return "{DataItem " + this.getId() + " " + this.getName() + " "
-				+ this.iconId + " ... }";
+				+ this.isFavourite() + " " + this.getDate() + " ... }";
 	}
 
 	public long getId() {
@@ -111,14 +88,7 @@ public class DataItem implements Serializable {
 		this.id = id;
 	}
 
-	/**
-	 * compare two elements
-	 */
 	public boolean equals(Object other) {
-
-		// we cannot compare getClass() because classes do not coincide in case
-		// of delete, where we create an anonymous inner class that extends
-		// DataItem
 		if (other == null || !(other instanceof DataItem)) {
 			return false;
 		} else {
