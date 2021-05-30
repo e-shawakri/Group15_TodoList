@@ -16,75 +16,41 @@ import com.group15.todoList.model.DataItemCRUDAccessor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Show a list of items
- * 
- * @author Joern Kreutel
- * 
- */
 public class ItemListActivity extends AppCompatActivity {
 
-	// the logger
 	protected static final String logger = ItemListActivity.class
 			.getSimpleName();
 
-	/**
-	 * the constant for the subview request
-	 */
 	public static final int REQUEST_ITEM_DETAILS = 2;
 
-	/**
-	 * the constant for the new item request
-	 */
 	public static final int REQUEST_ITEM_CREATION = 1;
 
-	/**
-	 * the items that will be display
-	 */
 	private List<DataItem> itemlist;
 
-	/**
-	 * the listview that will display the items
-	 */
 	private ListView listview;
 
-	/**
-	 * the adapter that mediates between the itemlist and the view
-	 */
 	private ArrayAdapter<DataItem> adapter;
 
-	/**
-	 * the data accessor for the data items
-	 */
 	private DataItemCRUDAccessor accessor;
 
 	static private class ViewHolder {
 		private TextView mTextView;
 	}
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.itemlistview);
 
 		try {
-			// access the listview
-			/*
-			 * access the list view for the options to be displayed
-			 */
 			listview = (ListView) findViewById(R.id.list);
 
-			// the button for adding new items
 			Button newitemButton = (Button) findViewById(R.id.newitemButton);
 
-			// obtain the accessor from the application, and pass it the
-			// accesorId we have been passed ourselves by the intent
 			accessor = ((DataAccessRemoteApplication) getApplication())
 					.getDataItemAccessor(getIntent().getExtras().getInt(
 							"accessorId"));
 
-			// set the title of the activity given the accessor class
 			setTitle(accessor
 					.getClass()
 					.getName()
@@ -93,15 +59,11 @@ public class ItemListActivity extends AppCompatActivity {
 
 			Log.i(logger, "will use accessor: " + accessor);
 
-			// initialise the item list
 			this.itemlist = new ArrayList<DataItem>();
 
-			// create the adapter
 			this.adapter = new ArrayAdapter<DataItem>(this,
 					R.layout.item_in_listview, itemlist) {
 
-				// we override getView and manually create the views for each
-				// list element
 				@Override
 				public View getView(int position, View itemView,
 						ViewGroup parent) {
@@ -125,13 +87,10 @@ public class ItemListActivity extends AppCompatActivity {
 					return listitemView;
 				}
 			};
-			// the adapter is set to display changes immediately
 			this.adapter.setNotifyOnChange(true);
 
-			// set the adapter on the list view
 			listview.setAdapter(this.adapter);
 
-			// set a listener that reacts to the selection of an element
 			listview.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -148,10 +107,8 @@ public class ItemListActivity extends AppCompatActivity {
 
 			});
 
-			// set the listview as scrollable
 			listview.setScrollBarStyle(ListView.SCROLLBARS_INSIDE_OVERLAY);
 
-			// set a listener for the newItemButton
 			newitemButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -162,7 +119,6 @@ public class ItemListActivity extends AppCompatActivity {
 
 			});
 
-			// finally, we add the itemlist asynchronously
 			new AsyncTask<Void, Void, List<DataItem>>() {
 				@Override
 				protected List<DataItem> doInBackground(Void... items) {
@@ -190,26 +146,18 @@ public class ItemListActivity extends AppCompatActivity {
 		Intent intent = new Intent(ItemListActivity.this,
 				ItemDetailsActivity.class);
 
-		// start the details activity with the intent
 		startActivityForResult(intent, REQUEST_ITEM_CREATION);
 	}
 
 	protected void processItemSelection(DataItem item) {
 		Log.i(logger, "processItemSelection(): " + item);
-		// create an intent for opening the details view
 		Intent intent = new Intent(ItemListActivity.this,
 				ItemDetailsActivity.class);
-		// pass the item to the intent
 		intent.putExtra(ItemDetailsActivity.ARG_ITEM_OBJECT, item);
 
-		// start the details activity with the intent
 		startActivityForResult(intent, REQUEST_ITEM_DETAILS);
 	}
 
-	/**
-	 * process the result of the item details subactivity, which may be the
-	 * creation, modification or deletion of an item.
-	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -220,14 +168,10 @@ public class ItemListActivity extends AppCompatActivity {
 				.getSerializableExtra(ItemDetailsActivity.ARG_ITEM_OBJECT)
 				: null;
 
-		// check which request we had
 		if (requestCode == REQUEST_ITEM_CREATION
 				&& resultCode == ItemDetailsActivity.RESPONSE_ITEM_UPDATED) {
 			Log.i(logger, "onActivityResult(): adding the created item");
 
-			/**
-			 * all accessor calls are executed asynchronously
-			 */
 			new AsyncTask<DataItem, Void, DataItem>() {
 				@Override
 				protected DataItem doInBackground(DataItem... items) {
