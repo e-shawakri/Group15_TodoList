@@ -5,6 +5,8 @@
     <!-- the labels used for the details view -->
     <string name="itemdetails_description">Beschreibung</string>
     <string name="itemdetails_name">Name</string>
+    <string name="itemdetails_favourite">Beliebste</string>
+    <string name="itemdetails_date">Datum</string>
 
     <string name="background_prompt">Hintergrundauswahl</string>
 

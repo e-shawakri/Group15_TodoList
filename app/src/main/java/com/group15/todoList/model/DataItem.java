@@ -18,7 +18,7 @@ public class DataItem implements Serializable {
 	private String name;
 	private String description;
 	private boolean favourite;
-	private DateFormat date;
+	private long date;
 
 
 	public void setType(ItemTypes type) {
@@ -35,9 +35,9 @@ public class DataItem implements Serializable {
 
 	public void setFavourite(boolean favourite) { this.favourite = favourite; }
 
-	public void setDate(DateFormat date) { this.date = date; }
+	public void setDate(long date) { this.date = date; }
 
-	public DataItem(long id, ItemTypes type, String name, String description, boolean favourite, DateFormat date) {
+	public DataItem(long id, ItemTypes type, String name, String description, boolean favourite, long date) {
 		this.setId(id == -1 ? ID++ : id);
 		this.setType(type);
 		this.setName(name);
@@ -64,7 +64,7 @@ public class DataItem implements Serializable {
 
 	public boolean isFavourite() { return this.favourite; }
 
-	public DateFormat getDate() { return this.date; }
+	public long getDate() { return this.date; }
 
 	public DataItem updateFrom(DataItem item) {
 		this.setName(item.getName());
