@@ -5,8 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
-
+        tools:context=".RegisterActivity">
 
     <ImageView
             android:src="@drawable/ic_person"
@@ -22,53 +21,69 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:hint="Email Address"
-            android:layout_below="@id/person"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:ems="15"
             android:layout_centerHorizontal="true"
-            android:id="@+id/usertxt"
-            android:padding="12dp"
+            android:id="@+id/userReg"
+            android:layout_below="@id/person"
             android:background="@drawable/round_border"
-            android:drawableLeft="@drawable/ic_email"
+            android:padding="10dp"
             android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="10dp"/>
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="10dp" />
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
             android:maxLength="6"
             android:hint="Password"
-            android:layout_below="@id/usertxt"
             android:ems="15"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/passtxt"
-            android:padding="12dp"
+            android:id="@+id/passReg"
+            android:layout_below="@id/userReg"
             android:background="@drawable/round_border"
+            android:padding="10dp"
             android:drawableStart="@drawable/ic_lock"
             android:drawableLeft="@drawable/ic_lock"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp" />
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:maxLength="6"
+            android:hint="Confirm Password"
+            android:layout_below="@id/passReg"
+            android:ems="15"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/confirmPass"
+            android:background="@drawable/round_border"
+            android:padding="10dp"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="10dp" />
     <Button
-            android:text="Log In"
+            android:text="Register"
             android:layout_width="323dp"
             android:layout_height="wrap_content"
-            android:id="@+id/loginbtn"
-            android:layout_below="@id/passtxt"
+            android:id="@+id/signupBtn"
+            android:layout_below="@id/confirmPass"
             android:enabled="false"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:background="@drawable/round_border"/>
+            android:background="@drawable/round_border" />
     <TextView
-            android:text="Register Now!"
+            android:text="Have an account? Back to Login!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/registerBtn"
-            android:layout_marginTop="15dp"
-            android:layout_below="@id/loginbtn"
+            android:layout_below="@id/signupBtn"
             android:gravity="center_horizontal"
+            android:layout_marginTop="15dp"
             android:textSize="16sp"
-            android:textColor="@color/purple_500"/>
+            android:textColor="@color/purple_500" />
 
 </RelativeLayout>
