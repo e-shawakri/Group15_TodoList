@@ -1,2 +1,3 @@
 include ':app'
+include ':backend'
 rootProject.name = "Todo List"
