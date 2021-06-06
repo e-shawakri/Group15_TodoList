@@ -34,7 +34,6 @@ public class DataItem implements Serializable {
 	private ItemTypes type;
 	private String name;
 	private String description;
-	private String iconId;
 
 	public void setType(ItemTypes type) {
 		this.type = type;
@@ -48,17 +47,11 @@ public class DataItem implements Serializable {
 		this.description = description;
 	}
 
-	public void setIconId(String iconId) {
-		this.iconId = iconId;
-	}
-
-	public DataItem(long id, ItemTypes type, String name, String description,
-			String iconId) {
+	public DataItem(long id, ItemTypes type, String name, String description) {
 		this.setId(id == -1 ? ID++ : id);
 		this.setType(type);
 		this.setName(name);
 		this.setDescription(description);
-		this.setIconId(iconId);
 	}
 
 	public DataItem() {
@@ -78,13 +71,6 @@ public class DataItem implements Serializable {
 	}
 
 	/**
-	 * @return
-	 */
-	public String getIconId() {
-		return this.iconId;
-	}
-
-	/**
 	 * update an item given the content of anothr one
 	 * 
 	 * @param item
@@ -93,7 +79,6 @@ public class DataItem implements Serializable {
 		this.setName(item.getName());
 		this.setDescription(item.getDescription());
 		this.setType(item.getType());
-		this.setIconId(item.getIconId());
 
 		return this;
 	}
