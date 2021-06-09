@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:height="30dip"
-        android:text="Hinzufügen..." />
+        android:text="Add Todo" />
 
 </RelativeLayout>

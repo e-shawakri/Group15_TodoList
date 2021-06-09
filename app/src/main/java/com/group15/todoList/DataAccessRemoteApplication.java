@@ -102,7 +102,7 @@ public class DataAccessRemoteApplication extends Application {
 	 * @return
 	 */
 	private String getWebappBaseUrl() {
-		return "http://192.168.0.187:8080/backend-1.0-SNAPSHOT/";
+		return "http://localhost:8080/backend-1.0-SNAPSHOT/";
 	}
 
 	private String getRestBaseUrl()

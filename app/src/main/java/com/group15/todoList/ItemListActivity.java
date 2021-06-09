@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.group15.todoList.model.DataItem;
 import com.group15.todoList.model.DataItemCRUDAccessor;
 
+import com.group15.todoList.model.accessors.HttpURLConnectionDataItemCRUDAccessor;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +50,9 @@ public class ItemListActivity extends AppCompatActivity {
 
 			Button newitemButton = (Button) findViewById(R.id.newitemButton);
 
-			accessor = ((DataAccessRemoteApplication) getApplication())
-					.getDataItemAccessor(getIntent().getExtras().getInt(
-							"accessorId"));
+			accessor = new HttpURLConnectionDataItemCRUDAccessor("http://10.0.2.2:8080/backend-1.0-SNAPSHOT/rest/dataitems");
 
-			setTitle(accessor
-					.getClass()
-					.getName()
-					.substring(
-							accessor.getClass().getName().lastIndexOf(".") + 1));
+			setTitle("Todo's");
 
 			Log.i(logger, "will use accessor: " + accessor);
 
@@ -170,6 +167,7 @@ public class ItemListActivity extends AppCompatActivity {
 
 		if (requestCode == REQUEST_ITEM_CREATION
 				&& resultCode == ItemDetailsActivity.RESPONSE_ITEM_UPDATED) {
+			Log.i(logger, "item: ");
 			Log.i(logger, "onActivityResult(): adding the created item");
 
 			new AsyncTask<DataItem, Void, DataItem>() {

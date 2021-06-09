@@ -22,7 +22,11 @@ public class RemoteDataItemAccessor implements DataItemCRUDAccessor {
 	 * we assign the ids here
 	 */
 	private static long idCount = 0;
-	
+
+	public RemoteDataItemAccessor() {
+		itemlist.add(new DataItem(0, DataItem.ItemTypes.TYPE1, "Name 1", "Desc 1"));
+	}
+
 	@Override
 	public List<DataItem> readAllItems() {
 		logger.info("readAllItems(): " + itemlist);

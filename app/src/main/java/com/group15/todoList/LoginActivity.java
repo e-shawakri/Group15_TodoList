@@ -75,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         userText.addTextChangedListener(enableButtonWatcher);
         passText.addTextChangedListener(enableButtonWatcher);
 
+        userText.setText("m@m.com");
+        passText.setText("111111");
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                            Intent myIntent = new Intent(LoginActivity.this, DataAccessRemoteActivity.class);
+                            Intent myIntent = new Intent(LoginActivity.this, ItemListActivity.class);
                             LoginActivity.this.startActivity(myIntent);
                             finish();
                         }

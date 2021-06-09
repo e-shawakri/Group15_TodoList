@@ -1,5 +1,7 @@
 package com.group15.todoList.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 
@@ -17,8 +19,9 @@ public class DataItem implements Serializable {
 	private ItemTypes type;
 	private String name;
 	private String description;
-	private boolean favourite;
+	private boolean isDone;
 	private long date;
+	private LatLng coords;
 
 
 	public void setType(ItemTypes type) {
@@ -33,16 +36,18 @@ public class DataItem implements Serializable {
 		this.description = description;
 	}
 
-	public void setFavourite(boolean favourite) { this.favourite = favourite; }
+	public void setIsDone(boolean isDone) { this.isDone = isDone; }
 
 	public void setDate(long date) { this.date = date; }
 
-	public DataItem(long id, ItemTypes type, String name, String description, boolean favourite, long date) {
+	public void setCoords(LatLng coords) { this.coords = coords; }
+
+	public DataItem(long id, ItemTypes type, String name, String description, boolean isDone, long date) {
 		this.setId(id == -1 ? ID++ : id);
 		this.setType(type);
 		this.setName(name);
 		this.setDescription(description);
-		this.setFavourite(favourite);
+		this.setIsDone(isDone);
 		this.setDate(date);
 	}
 
@@ -62,22 +67,25 @@ public class DataItem implements Serializable {
 		return this.description;
 	}
 
-	public boolean isFavourite() { return this.favourite; }
+	public boolean isDone() { return this.isDone; }
 
 	public long getDate() { return this.date; }
+
+	public LatLng getCoords() { return this.coords; }
 
 	public DataItem updateFrom(DataItem item) {
 		this.setName(item.getName());
 		this.setDescription(item.getDescription());
 		this.setType(item.getType());
-		this.setFavourite(item.isFavourite());
+		this.setIsDone(item.isDone());
 		this.setDate(item.getDate());
+		this.setCoords(item.getCoords());
 		return this;
 	}
 
 	public String toString() {
 		return "{DataItem " + this.getId() + " " + this.getName() + " "
-				+ this.isFavourite() + " " + this.getDate() + " ... }";
+				+ this.isDone() + " " + this.getDate() + " ... }";
 	}
 
 	public long getId() {
