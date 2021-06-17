@@ -74,7 +74,7 @@
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:background="@drawable/round_border" />
+            android:background="@drawable/round_btn" />
     <TextView
             android:text="Have an account? Back to Login!"
             android:layout_width="match_parent"

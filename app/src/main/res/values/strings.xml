@@ -3,12 +3,21 @@
 
 
     <!-- the labels used for the details view -->
-    <string name="itemdetails_description">Beschreibung</string>
+    <string name="itemdetails_description">Description</string>
     <string name="itemdetails_name">Name</string>
     <string name="itemdetails_favourite">Beliebste</string>
     <string name="itemdetails_date">Datum</string>
 
     <string name="background_prompt">Hintergrundauswahl</string>
+    <string name="fav_str">Favorite</string>
+    <string name="del_str">Delete</string>
+    <string name="save_str">Save</string>
+    <string name="reg_txt">Register Now!</string>
+    <string name="log_txt">Log In</string>
+    <string name="pass_txt">Password</string>
+    <string name="email_txt">Email Address</string>
+    <string name="loc_txt">Add Location</string>
+    <string name="date_txt">Add Date</string>
 
     <!-- the main menu items -->
     <string-array name="main_menu">

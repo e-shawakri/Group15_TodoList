@@ -81,7 +81,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	private Button saveButton;
 	private Button deleteButton;
 
-	protected Spinner iconpathSpinner;
+//	protected Spinner iconpathSpinner;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 
 			this.saveButton = (Button) findViewById(R.id.saveButton);
 			this.deleteButton = (Button) findViewById(R.id.deleteButton);
-			this.iconpathSpinner = (Spinner) findViewById(R.id.item_iconname);
+//			this.iconpathSpinner = (Spinner) findViewById(R.id.item_iconname);
 
 
 			this.item = (DataItem) getIntent().getSerializableExtra(
@@ -134,27 +134,27 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			this.saveButton.setOnClickListener(this);
 			this.deleteButton.setOnClickListener(this);
 
-			iconpathSpinner
-					.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-						@Override
-						public void onItemSelected(AdapterView<?> arg0,
-								View arg1, int arg2, long arg3) {
-							Log.d(logger, "got a selection: " + arg2);
-							String selectedItem = (String) arg0
-									.getSelectedItem();
-
-							String imgpath = getIconId4Iconname(selectedItem);
-
-							updateBackgroundImage(imgpath);
-						}
-
-						@Override
-						public void onNothingSelected(AdapterView<?> arg0) {
-							// TODO Auto-generated method stub
-
-						}
-					});
+//			iconpathSpinner
+//					.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//						@Override
+//						public void onItemSelected(AdapterView<?> arg0,
+//								View arg1, int arg2, long arg3) {
+//							Log.d(logger, "got a selection: " + arg2);
+//							String selectedItem = (String) arg0
+//									.getSelectedItem();
+//
+//							String imgpath = getIconId4Iconname(selectedItem);
+//
+//							updateBackgroundImage(imgpath);
+//						}
+//
+//						@Override
+//						public void onNothingSelected(AdapterView<?> arg0) {
+//							// TODO Auto-generated method stub
+//
+//						}
+//					});
 
 		} catch (Exception e) {
 			String err = "got exception: " + e;

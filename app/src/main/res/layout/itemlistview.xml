@@ -3,15 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
    <include layout="@layout/listview"/>
     
-    <!-- a button whose activation depends on the filling of other elements -->
+
+    </ScrollView>
+
     <Button
         android:id="@+id/newitemButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:height="30dip"
-        android:text="Add Todo" />
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:drawableLeft="@drawable/ic_plus"
+        android:gravity="center"
+        android:background="@drawable/circle_btn"
+        />
 
 </RelativeLayout>
