@@ -1,8 +1,8 @@
 package com.group15.todoList.model.accessors;
 
 import android.util.Log;
-import com.group15.todoList.model.DataItem;
-import com.group15.todoList.model.DataItemCRUDAccessor;
+import com.group15.todoList.model.TodoItem;
+import com.group15.todoList.model.TodoItemCRUDAccessor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,9 +24,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
+public class HttpClientTodoItemCRUDAccessor implements TodoItemCRUDAccessor {
 
-	protected static String logger = HttpClientDataItemCRUDAccessor.class
+	protected static String logger = HttpClientTodoItemCRUDAccessor.class
 			.getSimpleName();
 
 	public static final String MIME_TYPE = "application/json";
@@ -43,13 +43,13 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 
 	private ObjectMapper mObjectMapper = new ObjectMapper();
 
-	public HttpClientDataItemCRUDAccessor(String baseUrl) {
+	public HttpClientTodoItemCRUDAccessor(String baseUrl) {
 		this.client = new DefaultHttpClient();
 		this.baseUrl = baseUrl;
 	}
 
 	@Override
-	public List<DataItem> readAllItems() {
+	public List<TodoItem> readAllItems() {
 
 		Log.i(logger, "readAllItems()");
 
@@ -65,7 +65,7 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 				// try to read a json node from the stream
 				
 
-				List<DataItem> readValue = mObjectMapper.readValue(is, new TypeReference<List<DataItem>>(){});
+				List<TodoItem> readValue = mObjectMapper.readValue(is, new TypeReference<List<TodoItem>>(){});
 				return readValue;
 
 			} else {
@@ -78,12 +78,12 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 			Log.e(logger, "readAllItems(): got exception: " + e, e);
 		}
 
-		return new ArrayList<DataItem>();
+		return new ArrayList<TodoItem>();
 
 	}
 
 	@Override
-	public DataItem createItem(DataItem item) {
+	public TodoItem createItem(TodoItem item) {
 
 		Log.i(logger, "createItem(): " + item);
 
@@ -99,7 +99,7 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 				// obtain the input stream from the response
 				InputStream is = response.getEntity().getContent();
 				mObjectMapper = new ObjectMapper();
-				DataItem readValue = mObjectMapper.readValue(is, DataItem.class);
+				TodoItem readValue = mObjectMapper.readValue(is, TodoItem.class);
 
 				// create the itemlist from the json node
 				return readValue;
@@ -148,7 +148,7 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 	}
 
 	@Override
-	public DataItem updateItem(DataItem item) {
+	public TodoItem updateItem(TodoItem item) {
 
 		Log.i(logger, "upateItem(): " + item);
 
@@ -164,7 +164,7 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 				// obtain the input stream from the response
 				InputStream is = response.getEntity().getContent();
 				// try to read a json node from the stream
-				DataItem ret = mObjectMapper.readValue(is, DataItem.class);
+				TodoItem ret = mObjectMapper.readValue(is, TodoItem.class);
 				// create the itemlist from the json node
 				return ret;
 
@@ -182,7 +182,7 @@ public class HttpClientDataItemCRUDAccessor implements DataItemCRUDAccessor {
 
 	}
 
-	protected HttpEntity createHttpEntityFromDataItem(DataItem item)
+	protected HttpEntity createHttpEntityFromDataItem(TodoItem item)
 			throws UnsupportedEncodingException, IOException {
 
 		StringEntity se = new StringEntity(mObjectMapper.writeValueAsString(item));

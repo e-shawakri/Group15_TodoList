@@ -1,8 +1,8 @@
 package com.group15.todoList.model.accessors;
 
 import android.util.Log;
-import com.group15.todoList.model.DataItem;
-import com.group15.todoList.model.DataItemCRUDAccessor;
+import com.group15.todoList.model.TodoItem;
+import com.group15.todoList.model.TodoItemCRUDAccessor;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -13,22 +13,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpURLConnectionDataItemCRUDAccessor implements
-		DataItemCRUDAccessor {
+public class HttpURLConnectionTodoItemCRUDAccessor implements
+		TodoItemCRUDAccessor {
 
-	protected static String logger = HttpURLConnectionDataItemCRUDAccessor.class
+	protected static String logger = HttpURLConnectionTodoItemCRUDAccessor.class
 			.getSimpleName();
 
 	private String baseUrl;
 
 	private ObjectMapper mObjectMapper = new ObjectMapper();
 
-	public HttpURLConnectionDataItemCRUDAccessor(String baseUrl) {
+	public HttpURLConnectionTodoItemCRUDAccessor(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
 
 	@Override
-	public List<DataItem> readAllItems() {
+	public List<TodoItem> readAllItems() {
 
 		Log.i(logger, "readAllItems()");
 
@@ -43,7 +43,7 @@ public class HttpURLConnectionDataItemCRUDAccessor implements
 			InputStream is = con.getInputStream();
 			// check the response code
 			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				final List<DataItem> items = mObjectMapper.readValue(is, new TypeReference<List<DataItem>>() {});
+				final List<TodoItem> items = mObjectMapper.readValue(is, new TypeReference<List<TodoItem>>() {});
 				Log.i(logger, "readAllItems(): " + items);
 
 				return items;
@@ -56,12 +56,12 @@ public class HttpURLConnectionDataItemCRUDAccessor implements
 			Log.e(logger, "readAllItems(): got exception: " + e);
 		}
 
-		return new ArrayList<DataItem>();
+		return new ArrayList<TodoItem>();
 
 	}
 
 	@Override
-	public DataItem createItem(DataItem item) {
+	public TodoItem createItem(TodoItem item) {
 		Log.i(logger, "createItem(): " + item);
 
 		try {
@@ -81,7 +81,7 @@ public class HttpURLConnectionDataItemCRUDAccessor implements
 			InputStream is = con.getInputStream();
 			// check the response code
 			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				DataItem ret = mObjectMapper.readValue(is, DataItem.class);
+				TodoItem ret = mObjectMapper.readValue(is, TodoItem.class);
 				Log.i(logger, "createItem(): " + ret);
 
 				return ret;
@@ -131,7 +131,7 @@ public class HttpURLConnectionDataItemCRUDAccessor implements
 	 * functionality could be factored out...
 	 */
 	@Override
-	public DataItem updateItem(DataItem item) {
+	public TodoItem updateItem(TodoItem item) {
 		Log.i(logger, "updateItem(): " + item);
 
 		try {
@@ -151,7 +151,7 @@ public class HttpURLConnectionDataItemCRUDAccessor implements
 			InputStream is = con.getInputStream();
 			// check the response code
 			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				final DataItem ret = mObjectMapper.readValue(is, DataItem.class);
+				final TodoItem ret = mObjectMapper.readValue(is, TodoItem.class);
 				
 				Log.i(logger, "updateItem(): " + ret);
 

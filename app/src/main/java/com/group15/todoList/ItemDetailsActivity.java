@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -19,9 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -32,7 +29,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,14 +37,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.group15.todoList.model.DataItem;
-import com.group15.todoList.model.DataItem.ItemTypes;
+import com.group15.todoList.model.TodoItem;
+import com.group15.todoList.model.TodoItem.ItemTypes;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class ItemDetailsActivity extends AppCompatActivity implements OnClickListener, OnMapReadyCallback {
@@ -70,7 +62,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	Marker mCurrLocationMarker;
 	FusedLocationProviderClient mFusedLocationClient;
 
-	private DataItem item;
+	private TodoItem item;
 
 	private EditText itemName;
 	private EditText itemDescription;
@@ -110,7 +102,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 //			this.iconpathSpinner = (Spinner) findViewById(R.id.item_iconname);
 
 
-			this.item = (DataItem) getIntent().getSerializableExtra(
+			this.item = (TodoItem) getIntent().getSerializableExtra(
 					ARG_ITEM_OBJECT);
 
 			// Brandenburg THB coords - 52.411509, 12.539004
@@ -127,7 +119,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 				setTitle("New Todo");
 				deleteButton.setVisibility(View.GONE);
 
-				this.item = new DataItem(-1, ItemTypes.TYPE1, "", "",
+				this.item = new TodoItem(-1, ItemTypes.TYPE1, "", "",
 						false, itemDate.getMinDate());
 			}
 

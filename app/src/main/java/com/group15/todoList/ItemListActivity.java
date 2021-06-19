@@ -10,11 +10,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import androidx.appcompat.app.AppCompatActivity;
-import com.group15.todoList.model.DataItem;
-import com.group15.todoList.model.DataItemCRUDAccessor;
+import com.group15.todoList.model.TodoItem;
+import com.group15.todoList.model.TodoItemCRUDAccessor;
 
-import com.group15.todoList.model.accessors.HttpURLConnectionDataItemCRUDAccessor;
-import org.json.JSONObject;
+import com.group15.todoList.model.accessors.HttpURLConnectionTodoItemCRUDAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +27,13 @@ public class ItemListActivity extends AppCompatActivity {
 
 	public static final int REQUEST_ITEM_CREATION = 1;
 
-	private List<DataItem> itemlist;
+	private List<TodoItem> itemlist;
 
 	private ListView listview;
 
-	private ArrayAdapter<DataItem> adapter;
+	private ArrayAdapter<TodoItem> adapter;
 
-	private DataItemCRUDAccessor accessor;
+	private TodoItemCRUDAccessor accessor;
 
 	static private class ViewHolder {
 		private TextView mTextView;
@@ -50,15 +49,15 @@ public class ItemListActivity extends AppCompatActivity {
 
 			Button newitemButton = (Button) findViewById(R.id.newitemButton);
 
-			accessor = new HttpURLConnectionDataItemCRUDAccessor("http://10.0.2.2:8080/backend-1.0-SNAPSHOT/rest/dataitems");
+			accessor = new HttpURLConnectionTodoItemCRUDAccessor("http://10.0.2.2:8080/backend-1.0-SNAPSHOT/rest/dataitems");
 
 			setTitle("Todo's");
 
 			Log.i(logger, "will use accessor: " + accessor);
 
-			this.itemlist = new ArrayList<DataItem>();
+			this.itemlist = new ArrayList<TodoItem>();
 
-			this.adapter = new ArrayAdapter<DataItem>(this,
+			this.adapter = new ArrayAdapter<TodoItem>(this,
 					R.layout.item_in_listview, itemlist) {
 
 				@Override
@@ -97,7 +96,7 @@ public class ItemListActivity extends AppCompatActivity {
 					Log.i(logger, "onItemClick: position is: " + itemPosition
 							+ ", id is: " + itemId);
 
-					DataItem item = itemlist.get(itemPosition);
+					TodoItem item = itemlist.get(itemPosition);
 
 					processItemSelection(item);
 				}
@@ -116,14 +115,14 @@ public class ItemListActivity extends AppCompatActivity {
 
 			});
 
-			new AsyncTask<Void, Void, List<DataItem>>() {
+			new AsyncTask<Void, Void, List<TodoItem>>() {
 				@Override
-				protected List<DataItem> doInBackground(Void... items) {
+				protected List<TodoItem> doInBackground(Void... items) {
 					return ItemListActivity.this.accessor.readAllItems();
 				}
 
 				@Override
-				protected void onPostExecute(List<DataItem> items) {
+				protected void onPostExecute(List<TodoItem> items) {
 					itemlist.addAll(items);
 					adapter.notifyDataSetChanged();
 				}
@@ -146,7 +145,7 @@ public class ItemListActivity extends AppCompatActivity {
 		startActivityForResult(intent, REQUEST_ITEM_CREATION);
 	}
 
-	protected void processItemSelection(DataItem item) {
+	protected void processItemSelection(TodoItem item) {
 		Log.i(logger, "processItemSelection(): " + item);
 		Intent intent = new Intent(ItemListActivity.this,
 				ItemDetailsActivity.class);
@@ -161,7 +160,7 @@ public class ItemListActivity extends AppCompatActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Log.i(logger, "onActivityResult(): " + data);
 
-		DataItem item = data != null ? (DataItem) data
+		TodoItem item = data != null ? (TodoItem) data
 				.getSerializableExtra(ItemDetailsActivity.ARG_ITEM_OBJECT)
 				: null;
 
@@ -170,14 +169,14 @@ public class ItemListActivity extends AppCompatActivity {
 			Log.i(logger, "item: ");
 			Log.i(logger, "onActivityResult(): adding the created item");
 
-			new AsyncTask<DataItem, Void, DataItem>() {
+			new AsyncTask<TodoItem, Void, TodoItem>() {
 				@Override
-				protected DataItem doInBackground(DataItem... items) {
+				protected TodoItem doInBackground(TodoItem... items) {
 					return ItemListActivity.this.accessor.createItem(items[0]);
 				}
 
 				@Override
-				protected void onPostExecute(DataItem item) {
+				protected void onPostExecute(TodoItem item) {
 					if (item != null) {
 						adapter.add(item);
 					}
@@ -188,15 +187,15 @@ public class ItemListActivity extends AppCompatActivity {
 			if (resultCode == ItemDetailsActivity.RESPONSE_ITEM_UPDATED) {
 				Log.i(logger, "onActivityResult(): updating the edited item");
 
-				new AsyncTask<DataItem, Void, DataItem>() {
+				new AsyncTask<TodoItem, Void, TodoItem>() {
 					@Override
-					protected DataItem doInBackground(DataItem... items) {
+					protected TodoItem doInBackground(TodoItem... items) {
 						return ItemListActivity.this.accessor
 								.updateItem(items[0]);
 					}
 
 					@Override
-					protected void onPostExecute(DataItem item) {
+					protected void onPostExecute(TodoItem item) {
 						if (item != null) {
 							// read out the item from the list and update it
 							itemlist.get(itemlist.indexOf(item)).updateFrom(
@@ -209,9 +208,9 @@ public class ItemListActivity extends AppCompatActivity {
 
 			} else if (resultCode == ItemDetailsActivity.RESPONSE_ITEM_DELETED) {
 
-				new AsyncTask<DataItem, Void, DataItem>() {
+				new AsyncTask<TodoItem, Void, TodoItem>() {
 					@Override
-					protected DataItem doInBackground(DataItem... items) {
+					protected TodoItem doInBackground(TodoItem... items) {
 						if (ItemListActivity.this.accessor.deleteItem(items[0]
 								.getId())) {
 							return items[0];
@@ -223,7 +222,7 @@ public class ItemListActivity extends AppCompatActivity {
 					}
 
 					@Override
-					protected void onPostExecute(DataItem item) {
+					protected void onPostExecute(TodoItem item) {
 						if (item != null) {
 							adapter.remove(item);
 						}

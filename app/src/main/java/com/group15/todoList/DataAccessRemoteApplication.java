@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
-import com.group15.todoList.model.DataItemCRUDAccessor;
+import com.group15.todoList.model.TodoItemCRUDAccessor;
 import com.group15.todoList.model.MediaResourceAccessor;
 import com.group15.todoList.model.accessors.*;
 
@@ -23,15 +23,15 @@ public class DataAccessRemoteApplication extends Application {
 	 * the accessors that implement the different alternatives for accessing the
 	 * item list
 	 */
-	private DataItemCRUDAccessor localAccessor;
+	private TodoItemCRUDAccessor localAccessor;
 
-	private ResteasyDataItemCRUDAccessor resteasyAccessor;
+	private ResteasyTodoItemCRUDAccessor resteasyAccessor;
 
-	private URLDataItemCRUDAccessor urlAccessor;
+	private URLTodoItemCRUDAccessor urlAccessor;
 
-	private HttpClientDataItemCRUDAccessor httpClientAccessor;
+	private HttpClientTodoItemCRUDAccessor httpClientAccessor;
 
-	private HttpURLConnectionDataItemCRUDAccessor httpURLConnectionAccessor;
+	private HttpURLConnectionTodoItemCRUDAccessor httpURLConnectionAccessor;
 
 	private MediaResourceAccessorImpl mediaResourceAccessor;
 
@@ -39,18 +39,18 @@ public class DataAccessRemoteApplication extends Application {
 		Log.i(logger, "<constructor>()");
 
 		// initialise the accessors
-		this.localAccessor = new LocalDataItemCRUDAccessor();
+		this.localAccessor = new LocalTodoItemCRUDAccessor();
 
-		this.resteasyAccessor = new ResteasyDataItemCRUDAccessor(
+		this.resteasyAccessor = new ResteasyTodoItemCRUDAccessor(
 				getRestBaseUrl());
 
-		this.urlAccessor = new URLDataItemCRUDAccessor(
+		this.urlAccessor = new URLTodoItemCRUDAccessor(
 				getRestBaseUrl() + "/dataitems");
 
-		this.httpClientAccessor = new HttpClientDataItemCRUDAccessor(
+		this.httpClientAccessor = new HttpClientTodoItemCRUDAccessor(
 				getRestBaseUrl() + "/dataitems");
 
-		this.httpURLConnectionAccessor = new HttpURLConnectionDataItemCRUDAccessor(
+		this.httpURLConnectionAccessor = new HttpURLConnectionTodoItemCRUDAccessor(
 				getRestBaseUrl() + "/dataitems");
 
 		this.mediaResourceAccessor = new MediaResourceAccessorImpl(
@@ -59,8 +59,8 @@ public class DataAccessRemoteApplication extends Application {
 		Log.i(logger, "<constructor>(): created accessors.");
 	}
 
-	public DataItemCRUDAccessor getDataItemAccessor(int accessorId) {
-		DataItemCRUDAccessor accessor;
+	public TodoItemCRUDAccessor getDataItemAccessor(int accessorId) {
+		TodoItemCRUDAccessor accessor;
 
 		switch (accessorId) {
 		case R.integer.localAccessor:

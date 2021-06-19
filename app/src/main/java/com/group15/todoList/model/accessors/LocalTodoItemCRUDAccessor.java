@@ -1,32 +1,32 @@
 package com.group15.todoList.model.accessors;
 
-import com.group15.todoList.model.DataItem;
-import com.group15.todoList.model.DataItemCRUDAccessor;
+import com.group15.todoList.model.TodoItem;
+import com.group15.todoList.model.TodoItemCRUDAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalDataItemCRUDAccessor implements DataItemCRUDAccessor {
+public class LocalTodoItemCRUDAccessor implements TodoItemCRUDAccessor {
 	
 	/**
 	 * the list of data items(non-Javadoc)
 	 */
-	private List<DataItem> itemlist = new ArrayList<DataItem>();
+	private List<TodoItem> itemlist = new ArrayList<TodoItem>();
 
 	@Override
-	public List<DataItem> readAllItems() {
+	public List<TodoItem> readAllItems() {
 		return itemlist;
 	}
 
 	@Override
-	public DataItem createItem(DataItem item) {
+	public TodoItem createItem(TodoItem item) {
 		this.itemlist.add(item);
 		return item;
 	}
 
 	@Override
 	public boolean deleteItem(final long itemId) {
-		boolean removed = this.itemlist.remove(new DataItem() {
+		boolean removed = this.itemlist.remove(new TodoItem() {
 			/**
 			 * 
 			 */
@@ -42,7 +42,7 @@ public class LocalDataItemCRUDAccessor implements DataItemCRUDAccessor {
 	}
 
 	@Override
-	public DataItem updateItem(DataItem item) {
+	public TodoItem updateItem(TodoItem item) {
 		return this.itemlist.get(itemlist.indexOf(item)).updateFrom(item);
 	}
 
