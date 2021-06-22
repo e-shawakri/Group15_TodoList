@@ -6,25 +6,23 @@ import java.io.Serializable;
 
 public class TodoItem implements Serializable {
 
-	private static int ID = 0;
-
-	private static final long serialVersionUID = -7481912314472891511L;
-
-	public enum ItemTypes {
-		TYPE1, TYPE2, TYPE3
-	}
+	static final long startId = 0;
 
 	private long id;
-	private ItemTypes type;
 	private String name;
 	private String description;
-	private boolean isDone;
-	private long date;
-	private LatLng coords;
+//	private boolean isDone;
+//	private long date;
+//	private LatLng coords;
 
+	public TodoItem() {}
 
-	public void setType(ItemTypes type) {
-		this.type = type;
+	public TodoItem(long id, String name, String description) {
+		this.setId(id);
+		this.setName(name);
+		this.setDescription(description);
+//		this.setIsDone(isDone);
+//		this.setDate(date);
 	}
 
 	public void setName(String name) {
@@ -35,28 +33,13 @@ public class TodoItem implements Serializable {
 		this.description = description;
 	}
 
-	public void setIsDone(boolean isDone) { this.isDone = isDone; }
+//	public void setIsDone(boolean isDone) { this.isDone = isDone; }
 
-	public void setDate(long date) { this.date = date; }
+//	public void setDate(long date) { this.date = date; }
 
-	public void setCoords(LatLng coords) { this.coords = coords; }
+//	public void setCoords(LatLng coords) { this.coords = coords; }
 
-	public TodoItem(long id, ItemTypes type, String name, String description, boolean isDone, long date) {
-		this.setId(id == -1 ? ID++ : id);
-		this.setType(type);
-		this.setName(name);
-		this.setDescription(description);
-		this.setIsDone(isDone);
-		this.setDate(date);
-	}
-
-	public TodoItem() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public ItemTypes getType() {
-		return this.type;
-	}
+	// boolean isDone, long date
 
 	public String getName() {
 		return this.name;
@@ -66,25 +49,24 @@ public class TodoItem implements Serializable {
 		return this.description;
 	}
 
-	public boolean isDone() { return this.isDone; }
+//	public boolean isDone() { return this.isDone; }
 
-	public long getDate() { return this.date; }
+//	public long getDate() { return this.date; }
 
-	public LatLng getCoords() { return this.coords; }
+//	public LatLng getCoords() { return this.coords; }
 
 	public TodoItem updateFrom(TodoItem item) {
 		this.setName(item.getName());
 		this.setDescription(item.getDescription());
-		this.setType(item.getType());
-		this.setIsDone(item.isDone());
-		this.setDate(item.getDate());
-		this.setCoords(item.getCoords());
+//		this.setType(item.getType());
+//		this.setIsDone(item.isDone());
+//		this.setDate(item.getDate());
+//		this.setCoords(item.getCoords());
 		return this;
 	}
 
 	public String toString() {
-		return "{TodoItem " + this.getId() + " " + this.getName() + " "
-				+ this.isDone() + " " + this.getDate() + " ... }";
+		return "{id:" + this.getId() + ", name:" + this.getName() + ", description:" + this.getDescription() + "};";
 	}
 
 	public long getId() {
@@ -94,14 +76,4 @@ public class TodoItem implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public boolean equals(Object other) {
-		if (other == null || !(other instanceof TodoItem)) {
-			return false;
-		} else {
-			return ((TodoItem) other).getId() == this.getId();
-		}
-
-	}
-
 }

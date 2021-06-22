@@ -2,6 +2,7 @@ package com.group15.todoList.remote;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import com.group15.todoList.model.DataItem;
@@ -12,60 +13,42 @@ public class RemoteDataItemAccessor implements DataItemCRUDAccessor {
 	protected static Logger logger = Logger
 			.getLogger(RemoteDataItemAccessor.class);
 
-	/**
-	 * the list of data items, note that the list is *static* as for each client
-	 * request a new instance of this class will be created!
-	 */
 	private static List<DataItem> itemlist = new ArrayList<DataItem>();
 
-	/**
-	 * we assign the ids here
-	 */
-	private static long idCount = 0;
-
-	public RemoteDataItemAccessor() {
-		itemlist.add(new DataItem(0, DataItem.ItemTypes.TYPE1, "Name 1", "Desc 1"));
-	}
+	public RemoteDataItemAccessor() {}
 
 	@Override
 	public List<DataItem> readAllItems() {
-		logger.info("readAllItems(): " + itemlist);
-
 		return itemlist;
 	}
 
 	@Override
 	public DataItem createItem(DataItem item) {
-		logger.info("createItem(): " + item);
-		item.setId(idCount++);
-
 		itemlist.add(item);
 		return item;
 	}
 
 	@Override
-	public boolean deleteItem(final long itemId) {
-		logger.info("deleteItem(): " + itemId);
+	public DataItem updateItem(DataItem item) {
+		List<DataItem> updatedItemList = itemlist.stream()
+				.map(i -> i.getId() == item.getId() ? item : i)
+				.collect(Collectors.toList());
 
-		boolean removed = itemlist.remove(new DataItem() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 71193783355593985L;
+		itemlist.clear();
+		itemlist.addAll(updatedItemList);
 
-			@Override
-			public long getId() {
-				return itemId;
-			}
-		});
-
-		return removed;
+		return item;
 	}
 
 	@Override
-	public DataItem updateItem(DataItem item) {
-		logger.info("updateItem(): " + item);
+	public boolean deleteItem(final long itemId) {
+		List<DataItem> filteredItemList = itemlist.stream()
+				.filter(i -> i.getId() != itemId)
+				.collect(Collectors.toList());
 
-		return itemlist.get(itemlist.indexOf(item)).updateFrom(item);
+		itemlist.clear();
+		itemlist.addAll(filteredItemList);
+
+		return true;
 	}
 }

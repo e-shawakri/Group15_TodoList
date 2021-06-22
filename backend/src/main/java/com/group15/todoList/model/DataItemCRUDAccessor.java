@@ -23,10 +23,11 @@ public interface DataItemCRUDAccessor {
 	@POST
 	public DataItem createItem(DataItem item);
 
+	@PUT
+	public DataItem updateItem(DataItem item);
+
 	@DELETE
 	@Path("/{itemId}")
 	public boolean deleteItem(@PathParam("itemId") long itemId);
 
-	@PUT
-	public DataItem updateItem(DataItem item);
 }

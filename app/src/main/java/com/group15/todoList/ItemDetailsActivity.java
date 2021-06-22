@@ -38,7 +38,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.group15.todoList.model.TodoItem;
-import com.group15.todoList.model.TodoItem.ItemTypes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -100,10 +99,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			this.saveButton = (Button) findViewById(R.id.saveButton);
 			this.deleteButton = (Button) findViewById(R.id.deleteButton);
 //			this.iconpathSpinner = (Spinner) findViewById(R.id.item_iconname);
-
-
-			this.item = (TodoItem) getIntent().getSerializableExtra(
-					ARG_ITEM_OBJECT);
+			this.item = (TodoItem) getIntent().getSerializableExtra(ARG_ITEM_OBJECT);
 
 			// Brandenburg THB coords - 52.411509, 12.539004
 //			this.itemCoords = new LatLng(52.411509, 12.539004);
@@ -113,14 +109,14 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 
 				itemName.setText(item.getName());
 				itemDescription.setText(item.getDescription());
-				itemIsDone.setChecked(item.isDone());
-				itemDate.setDate(item.getDate());
+//				itemIsDone.setChecked(item.isDone());
+//				itemDate.setDate(item.getDate());
 			} else {
 				setTitle("New Todo");
 				deleteButton.setVisibility(View.GONE);
 
-				this.item = new TodoItem(-1, ItemTypes.TYPE1, "", "",
-						false, itemDate.getMinDate());
+				this.item = new TodoItem(-1, "", "");
+//						false, itemDate.getMinDate());
 			}
 
 			this.saveButton.setOnClickListener(this);
@@ -187,8 +183,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 
 		this.item.setName(this.itemName.getText().toString());
 		this.item.setDescription(this.itemDescription.getText().toString());
-		this.item.setIsDone(this.itemIsDone.isChecked());
-		this.item.setDate(this.itemDate.getDate());
+//		this.item.setIsDone(this.itemIsDone.isChecked());
+//		this.item.setDate(this.itemDate.getDate());
 
 		Intent returnIntent = new Intent();
 
@@ -237,43 +233,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 				.indexOf(name)];
 	}
 
-	private void updateBackgroundImage(final String resourcepath) {
 
-		Log.d(logger, "updating background image using resource: " + resourcepath);
-
-		new AsyncTask<Void, Void, Object>() {
-
-			@Override
-			protected Object doInBackground(Void... arg) {
-				try {
-					final Drawable imgcontent = new BitmapDrawable(getResources(),
-							BitmapFactory
-									.decodeStream(((DataAccessRemoteApplication) getApplication())
-											.getMediaResourceAccessor()
-											.readMediaResource(resourcepath + ".png")));
-					Log.d(logger, "got content: " + imgcontent + " of class " + imgcontent != null ? imgcontent.getClass().getName() : "<null>");
-
-					return imgcontent;
-				} catch (Exception e) {
-					return e;
-				}
-			}
-
-			@Override
-			protected void onPostExecute(Object result) {
-				if (result instanceof Drawable) {
-					((ViewGroup) findViewById(R.id.saveButton).getParent())
-							.setBackground((Drawable) result);
-				} else {
-					((DataAccessRemoteApplication) getApplication()).reportError(
-							ItemDetailsActivity.this,
-							((Exception) result).getMessage());
-					((Exception)result).printStackTrace();
-				}
-			}
-
-		}.execute();
-	}
 
 	private void requestLocation() {
 		mLocationRequest = new LocationRequest();
