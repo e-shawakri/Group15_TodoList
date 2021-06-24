@@ -17,8 +17,7 @@ import com.group15.todoList.model.TodoItemCRUDAccessor;
 
 import com.group15.todoList.model.accessors.HttpURLConnectionTodoItemCRUDAccessor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ItemListActivity extends AppCompatActivity {
@@ -56,8 +55,6 @@ public class ItemListActivity extends AppCompatActivity {
 
 			setTitle("Todo's");
 
-			Log.i(logger, "will use accessor: " + accessor);
-
 			this.itemlist = new ArrayList<TodoItem>();
 
 			this.adapter = new ArrayAdapter<TodoItem>(this, R.layout.item_in_listview, itemlist) {
@@ -66,7 +63,6 @@ public class ItemListActivity extends AppCompatActivity {
 					View listitemView;
 					if (itemView == null) {
 						listitemView = (ViewGroup) getLayoutInflater().inflate(R.layout.item_in_listview, null);
-
 						final ViewHolder viewHolder = new ViewHolder();
 						viewHolder.mTextView = (TextView) listitemView
 								.findViewById(R.id.itemName);
@@ -76,17 +72,24 @@ public class ItemListActivity extends AppCompatActivity {
 						listitemView = itemView;
 					}
 					ViewHolder holder = (ViewHolder) listitemView.getTag();
-					holder.mTextView.setText(itemlist.get(position).getName());
+
+					TodoItem current = itemlist.get(position);
+
+					String isDone = current.isDone() ? "Done" : "Not done";
+					String isFavourite = current.isFavourite() ? "♥" : "";
+
+					holder.mTextView.setText(current.getName() + "\n" + "Important: "
+							+ current.getImportance() + " | " + isDone + " | " + isFavourite);
 
 					return listitemView;
 				}
 			};
+
 			this.adapter.setNotifyOnChange(true);
 
 			listview.setAdapter(this.adapter);
 
 			listview.setOnItemClickListener(new OnItemClickListener() {
-
 				@Override
 				public void onItemClick(AdapterView<?> adapterView, View itemView, int itemPosition, long itemId) {
 					TodoItem item = itemlist.get(itemPosition);
@@ -116,6 +119,8 @@ public class ItemListActivity extends AppCompatActivity {
 				protected void onPostExecute(List<TodoItem> items) {
 					itemlist.addAll(items);
 
+					sortItems();
+
 					adapter.notifyDataSetChanged();
 				}
 			}.execute();
@@ -125,6 +130,23 @@ public class ItemListActivity extends AppCompatActivity {
 			Log.e(logger, err, e);
 			((DataAccessRemoteApplication) getApplication()).reportError(this, err);
 		}
+	}
+
+	public void sortItems() {
+		Collections.sort(itemlist, new Comparator<TodoItem>() {
+			@Override
+			public int compare(TodoItem left, TodoItem right) {
+				if (left.isDone() == right.isDone()) {
+					return left.getImportance() > right.getImportance() ? -1 : 1;
+				}
+
+				if (left.isDone()) {
+					return -1;
+				}
+
+				return 1;
+			}
+		});
 	}
 
 	protected void processNewItemRequest() {
@@ -168,7 +190,11 @@ public class ItemListActivity extends AppCompatActivity {
 				@Override
 				protected void onPostExecute(TodoItem item) {
 					if (item != null) {
-						adapter.add(item);
+						itemlist.add(item);
+
+						sortItems();
+
+						adapter.notifyDataSetChanged();
 					}
 				}
 			}.execute(item);
@@ -192,6 +218,8 @@ public class ItemListActivity extends AppCompatActivity {
 
 							itemlist.clear();
 							itemlist.addAll(newItemList);
+
+							sortItems();
 
 							adapter.notifyDataSetChanged();
 						}
@@ -220,6 +248,8 @@ public class ItemListActivity extends AppCompatActivity {
 
 							itemlist.clear();
 							itemlist.addAll(newItemList);
+
+							sortItems();
 
 							adapter.notifyDataSetChanged();
 						}
