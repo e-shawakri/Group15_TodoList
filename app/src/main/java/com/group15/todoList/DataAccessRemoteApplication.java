@@ -15,7 +15,7 @@ public class DataAccessRemoteApplication extends Application {
 
 	public DataAccessRemoteApplication() {
 		this.httpURLConnectionAccessor = new HttpURLConnectionTodoItemCRUDAccessor(
-				getRestBaseUrl() + "/dataitems");
+				getRestBaseUrl() + "/todoitems");
 	}
 
 	public TodoItemCRUDAccessor getDataItemAccessor(int accessorId) {
