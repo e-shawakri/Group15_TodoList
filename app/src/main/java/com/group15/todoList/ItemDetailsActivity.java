@@ -68,6 +68,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	private CheckBox itemFavourite;
 	private CalendarView itemDate;
 	private NumberPicker itemImportant;
+	private CheckBox itemDone;
 	private LatLng itemCoords;
 
 	private Button saveButton;
@@ -95,6 +96,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			this.itemFavourite = (CheckBox) findViewById(R.id.item_favourite);
 			this.itemDate = (CalendarView) findViewById(R.id.item_date);
 			this.itemImportant = (NumberPicker) findViewById(R.id.item_important);
+			this.itemDone = (CheckBox) findViewById(R.id.item_done);
 			itemImportant.setMinValue(0);
 			itemImportant.setMaxValue(10);
 
@@ -113,11 +115,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 				itemDate.setDate(item.getDate());
 				itemFavourite.setChecked(item.isFavourite());
 				itemImportant.setValue(item.getImportance());
+				itemDone.setChecked(item.isDone());
 			} else {
 				setTitle("New Todo");
 				deleteButton.setVisibility(View.GONE);
 
-				this.item = new TodoItem(-1, "", "", false, 0, 0, itemCoords);
+				this.item = new TodoItem(-1, "", "", false, 0,
+						0, false, itemCoords);
 			}
 
 			this.saveButton.setOnClickListener(this);

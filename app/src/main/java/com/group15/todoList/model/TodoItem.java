@@ -14,17 +14,20 @@ public class TodoItem implements Serializable {
 	private boolean favourite;
 	private long date;
 	private int importance;
+	private boolean done;
 	private LatLng coords;
 
 	public TodoItem() {}
 
-	public TodoItem(long id, String name, String description, boolean favourite, long date, int importance, LatLng coords) {
+	public TodoItem(long id, String name, String description, boolean favourite, long date, int importance,
+					boolean done,LatLng coords) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
 		this.setDate(date);
 		this.setFavourite(favourite);
 		this.setImportance(importance);
+		this.setDone(done);
 		this.setCoords(coords);
 	}
 
@@ -89,6 +92,14 @@ public class TodoItem implements Serializable {
 
 	public void setCoords(LatLng coords) {
 		this.coords = coords;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
+	}
+
+	public boolean isDone() {
+		return done;
 	}
 
 	public long getId() {

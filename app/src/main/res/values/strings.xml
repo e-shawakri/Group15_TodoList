@@ -19,7 +19,8 @@
     <string name="email_txt">Email Address</string>
     <string name="loc_txt">Add Location</string>
     <string name="date_txt">Add Date</string>
-    <string name="important_strg">How important is this task?</string>
+    <string name="done_str">Have you finished this task?</string>
+    <string name="important_str">How important is this task?</string>
 
     <!-- the main menu items -->
     <string-array name="main_menu">
