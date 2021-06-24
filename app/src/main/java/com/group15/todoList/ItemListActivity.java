@@ -2,6 +2,7 @@ package com.group15.todoList;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.group15.todoList.model.TodoItem;
 import com.group15.todoList.model.TodoItemCRUDAccessor;
@@ -17,6 +19,7 @@ import com.group15.todoList.model.accessors.HttpURLConnectionTodoItemCRUDAccesso
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemListActivity extends AppCompatActivity {
 
@@ -57,14 +60,9 @@ public class ItemListActivity extends AppCompatActivity {
 
 			this.itemlist = new ArrayList<TodoItem>();
 
-			this.adapter = new ArrayAdapter<TodoItem>(this,
-					R.layout.item_in_listview, itemlist) {
-
+			this.adapter = new ArrayAdapter<TodoItem>(this, R.layout.item_in_listview, itemlist) {
 				@Override
-				public View getView(int position, View itemView,
-						ViewGroup parent) {
-					Log.d(logger, "getView() has been invoked for item: "
-							+ itemlist.get(position));
+				public View getView(int position, View itemView, ViewGroup parent) {
 					View listitemView;
 					if (itemView == null) {
 						listitemView = (ViewGroup) getLayoutInflater().inflate(R.layout.item_in_listview, null);
@@ -90,17 +88,11 @@ public class ItemListActivity extends AppCompatActivity {
 			listview.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
-				public void onItemClick(AdapterView<?> adapterView,
-						View itemView, int itemPosition, long itemId) {
-
-					Log.i(logger, "onItemClick: position is: " + itemPosition
-							+ ", id is: " + itemId);
-
+				public void onItemClick(AdapterView<?> adapterView, View itemView, int itemPosition, long itemId) {
 					TodoItem item = itemlist.get(itemPosition);
 
 					processItemSelection(item);
 				}
-
 			});
 
 			listview.setScrollBarStyle(ListView.SCROLLBARS_INSIDE_OVERLAY);
@@ -109,7 +101,6 @@ public class ItemListActivity extends AppCompatActivity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					processNewItemRequest();
 				}
 
@@ -124,6 +115,7 @@ public class ItemListActivity extends AppCompatActivity {
 				@Override
 				protected void onPostExecute(List<TodoItem> items) {
 					itemlist.addAll(items);
+
 					adapter.notifyDataSetChanged();
 				}
 			}.execute();
@@ -131,10 +123,8 @@ public class ItemListActivity extends AppCompatActivity {
 		} catch (Exception e) {
 			String err = "got exception: " + e;
 			Log.e(logger, err, e);
-			((DataAccessRemoteApplication) getApplication()).reportError(this,
-					err);
+			((DataAccessRemoteApplication) getApplication()).reportError(this, err);
 		}
-
 	}
 
 	protected void processNewItemRequest() {
@@ -146,7 +136,7 @@ public class ItemListActivity extends AppCompatActivity {
 	}
 
 	protected void processItemSelection(TodoItem item) {
-		Log.i(logger, "processItemSelection(): " + item);
+		Log.i(logger, "processItemSelection(): " + item.toString());
 		Intent intent = new Intent(ItemListActivity.this,
 				ItemDetailsActivity.class);
 		intent.putExtra(ItemDetailsActivity.ARG_ITEM_OBJECT, item);
@@ -166,13 +156,12 @@ public class ItemListActivity extends AppCompatActivity {
 
 		if (requestCode == REQUEST_ITEM_CREATION
 				&& resultCode == ItemDetailsActivity.RESPONSE_ITEM_UPDATED) {
-			Log.i(logger, "item: ");
-			Log.i(logger, "onActivityResult(): adding the created item");
 
 			new AsyncTask<TodoItem, Void, TodoItem>() {
 				@Override
-				protected TodoItem doInBackground(TodoItem... items) {
-					return ItemListActivity.this.accessor.createItem(items[0]);
+				protected TodoItem doInBackground(TodoItem... item) {
+					item[0].setId(itemlist.size());
+					return ItemListActivity.this.accessor.createItem(item[0]);
 				}
 
 				@Override
@@ -185,8 +174,6 @@ public class ItemListActivity extends AppCompatActivity {
 
 		} else if (requestCode == REQUEST_ITEM_DETAILS) {
 			if (resultCode == ItemDetailsActivity.RESPONSE_ITEM_UPDATED) {
-				Log.i(logger, "onActivityResult(): updating the edited item");
-
 				new AsyncTask<TodoItem, Void, TodoItem>() {
 					@Override
 					protected TodoItem doInBackground(TodoItem... items) {
@@ -194,13 +181,17 @@ public class ItemListActivity extends AppCompatActivity {
 								.updateItem(items[0]);
 					}
 
+					@RequiresApi(api = Build.VERSION_CODES.N)
 					@Override
 					protected void onPostExecute(TodoItem item) {
 						if (item != null) {
-							// read out the item from the list and update it
-							itemlist.get(itemlist.indexOf(item)).updateFrom(
-									item);
-							// notify the adapter that the item has been changed
+							List<TodoItem> newItemList = itemlist.stream()
+									.map(i -> i.getId() == item.getId() ? item : i)
+									.collect(Collectors.toList());
+
+							itemlist.clear();
+							itemlist.addAll(newItemList);
+
 							adapter.notifyDataSetChanged();
 						}
 					}
@@ -211,20 +202,25 @@ public class ItemListActivity extends AppCompatActivity {
 				new AsyncTask<TodoItem, Void, TodoItem>() {
 					@Override
 					protected TodoItem doInBackground(TodoItem... items) {
-						if (ItemListActivity.this.accessor.deleteItem(items[0]
-								.getId())) {
+						if (ItemListActivity.this.accessor.deleteItem(items[0].getId())) {
 							return items[0];
 						} else {
-							Log.e(logger, "the item" + items[0]
-									+ " could not be deleted by the accessor!");
 							return null;
 						}
 					}
 
+					@RequiresApi(api = Build.VERSION_CODES.N)
 					@Override
 					protected void onPostExecute(TodoItem item) {
 						if (item != null) {
-							adapter.remove(item);
+							List<TodoItem> newItemList = itemlist.stream()
+									.filter(i -> i.getId() != item.getId())
+									.collect(Collectors.toList());
+
+							itemlist.clear();
+							itemlist.addAll(newItemList);
+
+							adapter.notifyDataSetChanged();
 						}
 					}
 				}.execute(item);

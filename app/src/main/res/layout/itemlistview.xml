@@ -4,14 +4,12 @@
     android:layout_height="match_parent" >
 
     <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-   <include layout="@layout/listview"/>
-    
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+    >
+        <include layout="@layout/listview"/>
     </ScrollView>
-
     <Button
         android:id="@+id/newitemButton"
         android:layout_width="60dp"

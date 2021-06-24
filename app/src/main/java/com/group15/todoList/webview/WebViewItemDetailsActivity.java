@@ -50,16 +50,6 @@ public class WebViewItemDetailsActivity extends ItemDetailsActivity {
 		// add JavaScriptExtensions
 		webview.addJavascriptInterface(new MyJavaScriptExtensions(),
 				"androidjs");
-
-		// load the uri
-		try {
-			webview.loadUrl(((DataAccessRemoteApplication) getApplication())
-					.getMediaResourceAccessor().getBaseUrl() + "formattedtext.html");
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "got exception: " + e, e);
-			((DataAccessRemoteApplication) getApplication()).reportError(this,
-					"got exception: " + e);
-		}
 	}
 
 	@Override

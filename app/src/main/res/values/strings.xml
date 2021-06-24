@@ -5,8 +5,9 @@
     <!-- the labels used for the details view -->
     <string name="itemdetails_description">Description</string>
     <string name="itemdetails_name">Name</string>
-    <string name="itemdetails_favourite">Beliebste</string>
-    <string name="itemdetails_date">Datum</string>
+    <string name="itemdetails_favourite">Favourite</string>
+    <string name="itemdetails_date">Date</string>
+    <string name="itemdetails_importance">Importance</string>
 
     <string name="background_prompt">Hintergrundauswahl</string>
     <string name="fav_str">Favorite</string>
@@ -18,6 +19,8 @@
     <string name="email_txt">Email Address</string>
     <string name="loc_txt">Add Location</string>
     <string name="date_txt">Add Date</string>
+    <string name="done_str">Have you finished this task?</string>
+    <string name="important_str">How important is this task?</string>
 
     <!-- the main menu items -->
     <string-array name="main_menu">
