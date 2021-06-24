@@ -1,12 +1,13 @@
 package com.group15.todoList.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class TodoItem implements Serializable {
-
-	static final long startId = 0;
 
 	private long id;
 	private String name;
@@ -15,7 +16,8 @@ public class TodoItem implements Serializable {
 	private long date;
 	private int importance;
 	private boolean done;
-	private LatLng coords;
+//	private double latitude = 0;
+//	private double longitude = 0;
 
 	public TodoItem() {}
 
@@ -28,7 +30,6 @@ public class TodoItem implements Serializable {
 		this.setFavourite(favourite);
 		this.setImportance(importance);
 		this.setDone(done);
-//		this.setCoords(coords);
 	}
 
 	public void setName(String name) {
@@ -77,7 +78,7 @@ public class TodoItem implements Serializable {
 		this.setFavourite(item.isFavourite());
 		this.setDate(item.getDate());
 		this.setImportance(item.getImportance());
-		this.setCoords(item.getCoords());
+//		this.setCoords(item.getCoords());
 		return this;
 	}
 
@@ -85,16 +86,27 @@ public class TodoItem implements Serializable {
 		return "{id:" + this.getId()
 				+ ", name:" + this.getName()
 				+ ", description:" + this.getDescription()
-				+ ", coords:" + this.getCoords()+ "};";
+				+ ", date:" + this.getDate()
+				+ ", isDone:" + this.isDone()
+				+ ", isFavourite:" + this.isFavourite()
+				+ ", importance:" + this.getImportance() + "};";
+//				+ ", latitude:" + this.latitude
+//				+ ", longitude:" + this.longitude;
 	}
 
-	public LatLng getCoords() {
-		return coords;
-	}
-
-	public void setCoords(LatLng coords) {
-		this.coords = coords;
-	}
+//	@RequiresApi(api = Build.VERSION_CODES.N)
+//	public Optional<LatLng> getCoords() {
+//		if (this.latitude == 0 || this.longitude == 0) {
+//			return Optional.empty();
+//		}
+//
+//		return Optional.of(new LatLng(latitude, longitude));
+//	}
+//
+//	public void setCoords(LatLng coords) {
+//		this.latitude = coords.latitude;
+//		this.longitude = coords.longitude;
+//	}
 
 	public void setDone(boolean done) {
 		this.done = done;

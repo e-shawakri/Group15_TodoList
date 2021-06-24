@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -39,8 +40,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.group15.todoList.model.TodoItem;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ItemDetailsActivity extends AppCompatActivity implements OnClickListener, OnMapReadyCallback {
 
@@ -52,8 +52,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	public static final int RESPONSE_ITEM_UPDATED = 1;
 
 	public static final int RESPONSE_ITEM_DELETED = 2;
-
-	public static final int RESPONSE_NOCHANGE = -1;
 
 	private GoogleMap map;
 	LocationRequest mLocationRequest;
@@ -102,12 +100,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			this.deleteButton = (Button) findViewById(R.id.deleteButton);
 			this.item = (TodoItem) getIntent().getSerializableExtra(ARG_ITEM_OBJECT);
 
-			// Brandenburg THB coords - 52.411509, 12.539004
-			this.itemCoords = new LatLng(52.411509, 12.539004);
-
 			if (this.item != null) {
 				setTitle("Todo Details");
-
 				itemName.setText(item.getName());
 				itemDescription.setText(item.getDescription());
 				itemDate.setDate(item.getDate());
@@ -117,14 +111,24 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			} else {
 				setTitle("New Todo");
 				deleteButton.setVisibility(View.GONE);
-
-				this.item = new TodoItem(-1, "", "", false, 0,
+				this.item = new TodoItem(-1, "", "", false, new Date().getTime(),
 						0, false);
 			}
 
 			this.saveButton.setOnClickListener(this);
 			this.deleteButton.setOnClickListener(this);
+			itemDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
+				@Override
+				public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+
+					Calendar c = Calendar.getInstance();
+
+					c.set(year, month, day);
+
+					itemDate.setDate(c.getTimeInMillis());
+				}
+			});
 		} catch (Exception e) {
 			String err = "got exception: " + e;
 			Log.e(logger, err, e);
@@ -133,6 +137,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 		}
 
 	}
+
+
 
 	protected boolean validateFields() {
 		Toast toast = null;
@@ -156,30 +162,20 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	}
 
 	protected void processItemSave() {
-		// re-set the fields of the item
-
-		Log.i(logger, "validate before");
 		if (!this.validateFields()) {
 			return;
 		}
 
-
-		Log.i(logger, "validate after");
 		this.item.setName(this.itemName.getText().toString());
 		this.item.setDescription(this.itemDescription.getText().toString());
-//		this.item.setIsDone(this.itemIsDone.isChecked());
-//		this.item.setDate(this.itemDate.getDate());
-
-		Log.i(logger, "after add fields");
+		this.item.setFavourite(this.itemFavourite.isChecked());
+		this.item.setDate(this.itemDate.getDate());
+		this.item.setDone(this.itemDone.isChecked());
+		this.item.setImportance(this.itemImportant.getValue());
 
 		Intent returnIntent = new Intent();
 
-		Log.i(logger, "after add intent");
-
-		Log.i(logger, "item" + this.item.toString());
 		returnIntent.putExtra(ARG_ITEM_OBJECT, this.item);
-
-		Log.i(logger, "after add extra");
 
 		setResult(RESPONSE_ITEM_UPDATED, returnIntent);
 
@@ -199,32 +195,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	@Override
 	public void onClick(View view) {
 		if (view == this.saveButton) {
-			Log.i(logger, "got onClick() on saveButton");
 			processItemSave();
 		} else if (view == this.deleteButton) {
-			Log.i(logger, "got onClick() ond deleteButton");
 			processItemDelete();
 		} else {
-			Log.w(logger,
-					"got onClick() on view where it will not be handled: "
-							+ view);
+			Log.w(logger, "got onClick() on view where it will not be handled: " + view);
 		}
 	}
-
-	protected int getIconIdIndex(String iconId) {
-		return Arrays.asList(
-				getResources()
-						.getStringArray(R.array.background_resources_list))
-				.indexOf(iconId);
-	}
-
-	protected String getIconId4Iconname(String name) {
-		return getResources().getStringArray(R.array.background_resources_list)[Arrays
-				.asList(getResources().getStringArray(R.array.background_list))
-				.indexOf(name)];
-	}
-
-
 
 	private void requestLocation() {
 		mLocationRequest = new LocationRequest();
@@ -248,38 +225,39 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 		}
 	}
 
+	public LatLng generateRandomLocation() {
+		LatLng point = new LatLng(52.411509, 12.539004);
+		Random random = new Random();
 
+		int radius = 5;
+
+		double angle = random.nextDouble() * Math.PI * 2;
+		double randomRadius = radius*random.nextDouble();
+
+		double relativeX = Math.cos(angle) * randomRadius;
+		double relativeY = Math.sin(angle) * randomRadius;
+
+		return new LatLng(point.latitude + relativeX, point.longitude + relativeY);
+	}
+
+
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		map = googleMap;
 
-		map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-			@Override
-			public void onMapClick(@NonNull LatLng coordinates) {
-				Log.i(logger, "coords" + coordinates);
-				itemCoords = coordinates;
-
-				if (mCurrLocationMarker != null) {
-					mCurrLocationMarker.setPosition(coordinates);
-				} else {
-					MarkerOptions markerOptions = new MarkerOptions();
-					markerOptions.position(coordinates);
-					markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-
-					mCurrLocationMarker = map.addMarker(markerOptions);
-				}
-
-				map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 14));
-			}
-		});
+//		if (item.getCoords().isPresent()) {
+//			this.itemCoords = item.getCoords().get();
+//		}
+		this.itemCoords = this.generateRandomLocation();
 
 		MarkerOptions markerOptions = new MarkerOptions();
-		markerOptions.position(new LatLng(52.411509, 12.539004));
+		markerOptions.position(this.itemCoords);
 		markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
 
 		mCurrLocationMarker = map.addMarker(markerOptions);
 
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.411509, 12.539004), 14));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(this.itemCoords, 14));
 
 		if (this.itemCoords != null) {
 			if (mCurrLocationMarker != null) {
