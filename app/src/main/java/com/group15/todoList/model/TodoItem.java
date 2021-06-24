@@ -11,18 +11,21 @@ public class TodoItem implements Serializable {
 	private long id;
 	private String name;
 	private String description;
-//	private boolean isDone;
-//	private long date;
-//	private LatLng coords;
+	private boolean favourite;
+	private long date;
+	private int importance;
+	private LatLng coords;
 
 	public TodoItem() {}
 
-	public TodoItem(long id, String name, String description) {
+	public TodoItem(long id, String name, String description, boolean favourite, long date, int importance, LatLng coords) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
-//		this.setIsDone(isDone);
-//		this.setDate(date);
+		this.setDate(date);
+		this.setFavourite(favourite);
+		this.setImportance(importance);
+		this.setCoords(coords);
 	}
 
 	public void setName(String name) {
@@ -33,14 +36,6 @@ public class TodoItem implements Serializable {
 		this.description = description;
 	}
 
-//	public void setIsDone(boolean isDone) { this.isDone = isDone; }
-
-//	public void setDate(long date) { this.date = date; }
-
-//	public void setCoords(LatLng coords) { this.coords = coords; }
-
-	// boolean isDone, long date
-
 	public String getName() {
 		return this.name;
 	}
@@ -49,24 +44,51 @@ public class TodoItem implements Serializable {
 		return this.description;
 	}
 
-//	public boolean isDone() { return this.isDone; }
 
-//	public long getDate() { return this.date; }
+	public boolean isFavourite() {
+		return favourite;
+	}
 
-//	public LatLng getCoords() { return this.coords; }
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite;
+	}
+
+	public long getDate() {
+		return date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
+	}
+
+	public int getImportance() {
+		return importance;
+	}
+
+	public void setImportance(int importance) {
+		this.importance = importance;
+	}
 
 	public TodoItem updateFrom(TodoItem item) {
 		this.setName(item.getName());
 		this.setDescription(item.getDescription());
-//		this.setType(item.getType());
-//		this.setIsDone(item.isDone());
-//		this.setDate(item.getDate());
-//		this.setCoords(item.getCoords());
+		this.setFavourite(item.isFavourite());
+		this.setDate(item.getDate());
+		this.setImportance(item.getImportance());
+		this.setCoords(item.getCoords());
 		return this;
 	}
 
 	public String toString() {
 		return "{id:" + this.getId() + ", name:" + this.getName() + ", description:" + this.getDescription() + "};";
+	}
+
+	public LatLng getCoords() {
+		return coords;
+	}
+
+	public void setCoords(LatLng coords) {
+		this.coords = coords;
 	}
 
 	public long getId() {

@@ -61,6 +61,23 @@
                 android:textSize="16sp"
                 android:layout_margin="20dp"
                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/important_strg"
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <NumberPicker
+                    android:id="@+id/item_important"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center"
+                    />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +91,7 @@
         <CalendarView
             android:id="@+id/item_date"
             android:layout_width="fill_parent"
-            android:layout_height="226dp"
+            android:layout_height="300dp"
             android:layout_gravity="left|top"
             android:layout_margin="5dp"
             android:background="@drawable/round_border"

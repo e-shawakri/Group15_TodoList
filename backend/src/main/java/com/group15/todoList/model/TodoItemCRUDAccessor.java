@@ -12,19 +12,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 
-@Path("/dataitems")
+@Path("/todoitems")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
-public interface DataItemCRUDAccessor {
+public interface TodoItemCRUDAccessor {
 	
 	@GET
-	public List<DataItem> readAllItems();
+	public List<TodoItem> readAllItems();
 	
 	@POST
-	public DataItem createItem(DataItem item);
+	public TodoItem createItem(TodoItem item);
 
 	@PUT
-	public DataItem updateItem(DataItem item);
+	public TodoItem updateItem(TodoItem item);
 
 	@DELETE
 	@Path("/{itemId}")
