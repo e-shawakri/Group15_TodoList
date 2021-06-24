@@ -1,7 +1,5 @@
 package com.group15.todoList.model;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.Serializable;
 
 public class TodoItem implements Serializable {
@@ -15,12 +13,13 @@ public class TodoItem implements Serializable {
 	private long date;
 	private int importance;
 	private boolean done;
-	private LatLng coords;
+	private double latitude;
+	private double longitude;
 
 	public TodoItem() {}
 
 	public TodoItem(long id, String name, String description, boolean favourite, long date, int importance,
-					boolean done,LatLng coords) {
+					boolean done, double latitude, double longitude) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
@@ -28,7 +27,8 @@ public class TodoItem implements Serializable {
 		this.setFavourite(favourite);
 		this.setImportance(importance);
 		this.setDone(done);
-		this.setCoords(coords);
+		this.setLongitude(longitude);
+		this.setLatitude(latitude);
 	}
 
 	public void setName(String name) {
@@ -78,20 +78,30 @@ public class TodoItem implements Serializable {
 		this.setFavourite(item.isFavourite());
 		this.setDate(item.getDate());
 		this.setImportance(item.getImportance());
-		this.setCoords(item.getCoords());
+		this.setLatitude(item.getLatitude());
+		this.setLongitude(item.getLongitude());
 		return this;
 	}
 
 	public String toString() {
-		return "{id:" + this.getId() + ", name:" + this.getName() + ", description:" + this.getDescription() + "};";
+		return "{id:" + this.getId() + ", name:" + this.getName() + ", description:" + this.getDescription() +
+				", favourite:" + this.isFavourite() + ", date:" + this.getDate() + ", importance:" + this.getImportance() + "};";
 	}
 
-	public LatLng getCoords() {
-		return coords;
+	public double getLongitude() {
+		return longitude;
 	}
 
-	public void setCoords(LatLng coords) {
-		this.coords = coords;
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	public void setDone(boolean done) {

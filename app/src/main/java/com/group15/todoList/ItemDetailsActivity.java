@@ -4,11 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -16,7 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -74,8 +69,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	private Button saveButton;
 	private Button deleteButton;
 
-//	protected Spinner iconpathSpinner;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,7 +114,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 				deleteButton.setVisibility(View.GONE);
 
 				this.item = new TodoItem(-1, "", "", false, 0,
-						0, false, itemCoords);
+						0, false, itemCoords.latitude, itemCoords.longitude);
 			}
 
 			this.saveButton.setOnClickListener(this);
@@ -166,8 +159,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 
 		this.item.setName(this.itemName.getText().toString());
 		this.item.setDescription(this.itemDescription.getText().toString());
-//		this.item.setIsDone(this.itemIsDone.isChecked());
-//		this.item.setDate(this.itemDate.getDate());
+		this.item.setDone(this.itemDone.isChecked());
+		this.item.setDate(this.itemDate.getDate());
+		this.item.setImportance(this.itemImportant.getValue());
+		this.item.setLongitude(itemCoords.longitude);
+		this.item.setLatitude(itemCoords.latitude);
 
 		Intent returnIntent = new Intent();
 
@@ -194,7 +190,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 			Log.i(logger, "got onClick() on saveButton");
 			processItemSave();
 		} else if (view == this.deleteButton) {
-			Log.i(logger, "got onClick() ond deleteButton");
+			Log.i(logger, "got onClick() on deleteButton");
 			processItemDelete();
 		} else {
 			Log.w(logger,
