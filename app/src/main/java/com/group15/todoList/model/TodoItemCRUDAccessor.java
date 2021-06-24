@@ -4,7 +4,7 @@ import javax.ws.rs.*;
 import java.util.List;
 
 
-@Path("/dataitems")
+@Path("/todoitems")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
 public interface TodoItemCRUDAccessor {

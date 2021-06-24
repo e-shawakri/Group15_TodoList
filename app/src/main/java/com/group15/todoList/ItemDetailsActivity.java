@@ -74,8 +74,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	private Button saveButton;
 	private Button deleteButton;
 
-//	protected Spinner iconpathSpinner;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,7 +119,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 				deleteButton.setVisibility(View.GONE);
 
 				this.item = new TodoItem(-1, "", "", false, 0,
-						0, false, itemCoords);
+						0, false);
 			}
 
 			this.saveButton.setOnClickListener(this);
@@ -160,18 +158,28 @@ public class ItemDetailsActivity extends AppCompatActivity implements OnClickLis
 	protected void processItemSave() {
 		// re-set the fields of the item
 
+		Log.i(logger, "validate before");
 		if (!this.validateFields()) {
 			return;
 		}
 
+
+		Log.i(logger, "validate after");
 		this.item.setName(this.itemName.getText().toString());
 		this.item.setDescription(this.itemDescription.getText().toString());
 //		this.item.setIsDone(this.itemIsDone.isChecked());
 //		this.item.setDate(this.itemDate.getDate());
 
+		Log.i(logger, "after add fields");
+
 		Intent returnIntent = new Intent();
 
+		Log.i(logger, "after add intent");
+
+		Log.i(logger, "item" + this.item.toString());
 		returnIntent.putExtra(ARG_ITEM_OBJECT, this.item);
+
+		Log.i(logger, "after add extra");
 
 		setResult(RESPONSE_ITEM_UPDATED, returnIntent);
 

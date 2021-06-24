@@ -52,7 +52,7 @@ public class ItemListActivity extends AppCompatActivity {
 
 			Button newitemButton = (Button) findViewById(R.id.newitemButton);
 
-			accessor = new HttpURLConnectionTodoItemCRUDAccessor("http://10.0.2.2:8080/backend-1.0-SNAPSHOT/rest/dataitems");
+			accessor = new HttpURLConnectionTodoItemCRUDAccessor("http://10.0.2.2:8080/backend-1.0-SNAPSHOT/rest/todoitems");
 
 			setTitle("Todo's");
 
@@ -160,6 +160,7 @@ public class ItemListActivity extends AppCompatActivity {
 			new AsyncTask<TodoItem, Void, TodoItem>() {
 				@Override
 				protected TodoItem doInBackground(TodoItem... item) {
+
 					item[0].setId(itemlist.size());
 					return ItemListActivity.this.accessor.createItem(item[0]);
 				}

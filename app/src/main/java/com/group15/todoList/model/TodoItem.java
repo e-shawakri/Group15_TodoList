@@ -20,7 +20,7 @@ public class TodoItem implements Serializable {
 	public TodoItem() {}
 
 	public TodoItem(long id, String name, String description, boolean favourite, long date, int importance,
-					boolean done,LatLng coords) {
+					boolean done) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
@@ -28,7 +28,7 @@ public class TodoItem implements Serializable {
 		this.setFavourite(favourite);
 		this.setImportance(importance);
 		this.setDone(done);
-		this.setCoords(coords);
+//		this.setCoords(coords);
 	}
 
 	public void setName(String name) {
@@ -46,7 +46,6 @@ public class TodoItem implements Serializable {
 	public String getDescription() {
 		return this.description;
 	}
-
 
 	public boolean isFavourite() {
 		return favourite;
@@ -83,7 +82,10 @@ public class TodoItem implements Serializable {
 	}
 
 	public String toString() {
-		return "{id:" + this.getId() + ", name:" + this.getName() + ", description:" + this.getDescription() + "};";
+		return "{id:" + this.getId()
+				+ ", name:" + this.getName()
+				+ ", description:" + this.getDescription()
+				+ ", coords:" + this.getCoords()+ "};";
 	}
 
 	public LatLng getCoords() {
